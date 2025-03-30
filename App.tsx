@@ -8,6 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './src/screens/HomeScreen';
 import LessonScreen from './src/screens/LessonScreen';
 import PracticeScreen from './src/screens/PracticeScreen';
+import PhraseDetailScreen from './src/screens/PhraseDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,11 @@ export default function App() {
           <Stack.Screen 
             name="Practice" 
             component={PracticeScreen} 
+          />
+          <Stack.Screen 
+            name="PhraseDetail" 
+            component={PhraseDetailScreen} 
+            options={{ title: 'Practice Phrase' }}
           />
         </Stack.Navigator>
         <StatusBar style="auto" />

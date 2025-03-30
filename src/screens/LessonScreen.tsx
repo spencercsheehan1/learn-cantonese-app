@@ -1,6 +1,26 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SpeechPlayer from '../components/SpeechPlayer';
+
+// Types for navigation
+interface NavigationProps {
+  navigate: (screen: string, params?: any) => void;
+  goBack: () => void;
+  setOptions: (options: any) => void;
+}
+
+interface RouteParams {
+  lessonId: string;
+  title?: string;
+}
+
+// Types for phrases
+interface Phrase {
+  cantonese: string;
+  english: string;
+  pronunciation: string;
+}
 
 // Mock data for lesson content
 const LESSONS = {
@@ -23,18 +43,38 @@ const LESSONS = {
       { cantonese: 'sei3', english: 'Four', pronunciation: 'say' },
       { cantonese: 'ng5', english: 'Five', pronunciation: 'ng' },
     ]
+  },
+  '3': {
+    title: 'Food & Drinks',
+    phrases: [
+      { cantonese: 'sik6 faan6', english: 'Eat rice/meal', pronunciation: 'sik faan' },
+      { cantonese: 'jam2 seoi2', english: 'Drink water', pronunciation: 'yam seui' },
+      { cantonese: 'cha4', english: 'Tea', pronunciation: 'cha' },
+      { cantonese: 'gafe1', english: 'Coffee', pronunciation: 'ga-feh' },
+      { cantonese: 'daan6 gou1', english: 'Cake', pronunciation: 'daan goh' },
+    ]
+  },
+  '4': {
+    title: 'Transportation',
+    phrases: [
+      { cantonese: 'ba1 si2', english: 'Bus', pronunciation: 'ba si' },
+      { cantonese: 'dei6 tit3', english: 'Subway', pronunciation: 'day tit' },
+      { cantonese: 'dik1 si2', english: 'Taxi', pronunciation: 'dik si' },
+      { cantonese: 'gei1 cei1', english: 'Airplane', pronunciation: 'gay chay' },
+      { cantonese: 'hang4 zau6', english: 'Walk', pronunciation: 'hang zau' },
+    ]
   }
 };
 
-const LessonScreen = ({ route, navigation }) => {
+const LessonScreen = ({ route, navigation }: { route: { params: RouteParams }, navigation: NavigationProps }) => {
   const { lessonId, title } = route.params;
-  const lesson = LESSONS[lessonId] || { title: 'Lesson not found', phrases: [] };
+  const lesson = LESSONS[lessonId as keyof typeof LESSONS] || { title: 'Lesson not found', phrases: [] };
   
   React.useEffect(() => {
     navigation.setOptions({
-      title: title || 'Lesson',
+      title: title || lesson.title || 'Lesson',
     });
-  }, [navigation, title]);
+  }, [navigation, title, lesson.title]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,11 +84,29 @@ const LessonScreen = ({ route, navigation }) => {
           <Text style={styles.lessonSubtitle}>Learn these common phrases</Text>
         </View>
         
-        {lesson.phrases.map((phrase, index) => (
+        {lesson.phrases.map((phrase: Phrase, index: number) => (
           <View key={index} style={styles.phraseCard}>
             <Text style={styles.cantonese}>{phrase.cantonese}</Text>
             <Text style={styles.english}>{phrase.english}</Text>
             <Text style={styles.pronunciation}>Pronunciation: {phrase.pronunciation}</Text>
+            
+            <View style={styles.actionRow}>
+              <SpeechPlayer 
+                text={phrase.cantonese} 
+                language="zh-HK" 
+                label="Listen" 
+              />
+              
+              <TouchableOpacity 
+                style={styles.repeatButton}
+                onPress={() => navigation.navigate('PhraseDetail', { 
+                  lessonId, 
+                  phraseIndex: index 
+                })}
+              >
+                <Text style={styles.repeatButtonText}>Practice</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ))}
         
@@ -113,6 +171,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#777',
     fontStyle: 'italic',
+    marginBottom: 12,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  repeatButton: {
+    backgroundColor: '#5C6BC0',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  repeatButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
   },
   practiceButton: {
     backgroundColor: '#ED4B4F',
