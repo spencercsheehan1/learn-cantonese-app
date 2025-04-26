@@ -19,7 +19,7 @@
     "react-native-safe-area-context": "^4.8.2",
     "react-native-screens": "~4.10.0",
     "uuid": "^11.1.0",
-    "react-dom": "18.3.1",
+    "react-dom": "19.1.0",
     "react-native-web": "~0.19.13",
     "@expo/metro-runtime": "~4.0.1",
     "expo-speech": "~13.0.1"
