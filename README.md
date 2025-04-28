@@ -46,6 +46,91 @@ This app is designed to work with the Cantonese.ai API for speech recognition an
 2. Ensure all API keys are properly secured and not included in the repository
 3. Set up proper environment variable handling for your production environment
 
+## AWS Deployment with Terraform
+
+This section provides a step-by-step guide to deploy the application on AWS using Terraform. The infrastructure is designed to be cost-effective and suitable for learning purposes.
+
+### Prerequisites
+
+1. Install [Terraform](https://www.terraform.io/downloads.html)
+2. Install [AWS CLI](https://aws.amazon.com/cli/)
+3. Configure AWS credentials:
+   ```bash
+   aws configure
+   ```
+4. Create an S3 bucket for Terraform state:
+   ```bash
+   aws s3api create-bucket --bucket your-terraform-state-bucket --region us-east-1
+   ```
+
+### Infrastructure Components
+
+The Terraform configuration creates:
+- VPC with public and private subnets
+- ECS Fargate cluster for containerized deployment
+- Application Load Balancer
+- RDS PostgreSQL database (t3.micro for cost efficiency)
+- S3 bucket for static assets
+- CloudFront distribution for content delivery
+- Route53 DNS configuration (optional)
+
+### Deployment Steps
+
+1. Clone the repository and navigate to the terraform directory:
+   ```bash
+   git clone https://github.com/yourusername/learn-cantonese-app.git
+   cd learn-cantonese-app/terraform
+   ```
+
+2. Initialize Terraform:
+   ```bash
+   terraform init -backend-config="bucket=your-terraform-state-bucket"
+   ```
+
+3. Review the planned changes:
+   ```bash
+   terraform plan
+   ```
+
+4. Apply the infrastructure:
+   ```bash
+   terraform apply
+   ```
+
+5. After deployment, you'll receive:
+   - Load Balancer DNS name
+   - RDS endpoint
+   - S3 bucket name
+   - CloudFront distribution URL
+
+### Cost Optimization
+
+The infrastructure is designed to be cost-effective:
+- Uses t3.micro instances where possible
+- Implements auto-scaling with minimum instances
+- Uses Fargate spot instances for non-critical workloads
+- Implements CloudFront caching to reduce origin requests
+
+### Cleanup
+
+To remove all AWS resources:
+```bash
+terraform destroy
+```
+
+### Security Notes
+
+1. The Terraform configuration includes:
+   - Security groups with minimal required access
+   - IAM roles with least privilege
+   - Encrypted RDS instances
+   - Secure parameter storage for secrets
+
+2. Environment variables are stored in AWS Systems Manager Parameter Store
+   ```bash
+   aws ssm put-parameter --name "/app/CANTONESE_AI_API_KEY" --value "your-api-key" --type SecureString
+   ```
+
 ## Security Considerations
 
 - The `speechRecognition.ts` file contains placeholders for API handling - in a production environment, implement proper key management
