@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - npx expo export
+        - EXPO_IMAGE_UTILS_NO_SHARP=1 npx expo export
   artifacts:
     baseDirectory: web-build
     files:
