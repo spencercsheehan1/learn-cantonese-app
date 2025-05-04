@@ -68,3 +68,10 @@ coverage/
 # Temporary files
 tmp/
 temp/
+
+# Terraform
+terraform/.terraform/
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info

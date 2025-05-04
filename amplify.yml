@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npx expo export
+  artifacts:
+    baseDirectory: web-build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
