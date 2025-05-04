@@ -6,9 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        # The '--no-optimization' flag is used to prevent minification and other optimizations during the web export process.
-        # This is necessary to ensure compatibility with certain tools or debugging workflows.
-        - npx expo export:web --no-optimization
+        - npx expo export:web
   artifacts:
     baseDirectory: web-build
     files:
