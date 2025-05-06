@@ -21,7 +21,7 @@
     "uuid": "^11.1.0",
     "react-dom": "19.1.0",
     "react-native-web": "~0.20.0",
-    "@expo/metro-runtime": "~4.0.1",
+    "@expo/metro-runtime": "~5.0.4",
     "expo-speech": "~13.0.1"
   },
   "devDependencies": {
