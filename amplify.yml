@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - npx expo export:web
+        - npx expo export
   artifacts:
     baseDirectory: web-build
     files:
