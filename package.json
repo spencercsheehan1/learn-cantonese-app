@@ -25,7 +25,7 @@
     "expo-speech": "~13.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.27.4",
     "@types/react": "~19.1.2",
     "typescript": "^5.3.0"
   }
